@@ -3,68 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game.Scripts.LiveObjects;
 using Cinemachine;
+using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace Game.Scripts.Player
 {
     [RequireComponent(typeof(CharacterController))]
     public class Player : MonoBehaviour
     {
+        [FormerlySerializedAs("_speed")] [SerializeField]
+        private float Speed = 5.0f;
+        [FormerlySerializedAs("_detonator")] [SerializeField]
+        private Detonator Detonator;
+        [FormerlySerializedAs("_followCam")] [SerializeField]
+        private CinemachineVirtualCamera FollowCam;
+        [FormerlySerializedAs("_model")] [SerializeField]
+        private GameObject Model;
+        /// <summary>
+        /// Input Action Reference for moving the player
+        /// </summary>
+        [field: SerializeField, Tooltip("Input Action Reference for moving the player"), Header("Input Action References")]
+        private InputActionReference MoveReference { get; set; } = null;
+        
+        private bool _playerGrounded;
         private CharacterController _controller;
         private Animator _anim;
-        [SerializeField]
-        private float _speed = 5.0f;
-        private bool _playerGrounded;
-        [SerializeField]
-        private Detonator _detonator;
         private bool _canMove = true;
-        [SerializeField]
-        private CinemachineVirtualCamera _followCam;
-        [SerializeField]
-        private GameObject _model;
-
-
-        private void OnEnable()
-        {
-            InteractableZone.onZoneInteractionComplete += InteractableZone_onZoneInteractionComplete;
-            Laptop.onHackComplete += ReleasePlayerControl;
-            Laptop.onHackEnded += ReturnPlayerControl;
-            Forklift.onDriveModeEntered += ReleasePlayerControl;
-            Forklift.onDriveModeExited += ReturnPlayerControl;
-            Forklift.onDriveModeEntered += HidePlayer;
-            Drone.OnEnterFlightMode += ReleasePlayerControl;
-            Drone.onExitFlightmode += ReturnPlayerControl;
-        } 
-
-        private void Start()
-        {
-            _controller = GetComponent<CharacterController>();
-
-            if (_controller == null)
-                Debug.LogError("No Character Controller Present");
-
-            _anim = GetComponentInChildren<Animator>();
-
-            if (_anim == null)
-                Debug.Log("Failed to connect the Animator");
-        }
-
-        private void Update()
-        {
-            if (_canMove == true)
-                CalcutateMovement();
-
-        }
 
         private void CalcutateMovement()
         {
             _playerGrounded = _controller.isGrounded;
-            float h = Input.GetAxisRaw("Horizontal");
-            float v = Input.GetAxisRaw("Vertical");
+            // float h = Input.GetAxisRaw("Horizontal");
+            // float v = Input.GetAxisRaw("Vertical");
+            float h = MoveReference.action.ReadValue<Vector2>().x;
+            float v = MoveReference.action.ReadValue<Vector2>().y;
 
             transform.Rotate(transform.up, h);
 
             var direction = transform.forward * v;
-            var velocity = direction * _speed;
+            var velocity = direction * Speed;
 
 
             _anim.SetFloat("Speed", Mathf.Abs(velocity.magnitude));
@@ -86,7 +63,7 @@ namespace Game.Scripts.Player
             switch(zone.GetZoneID())
             {
                 case 1: //place c4
-                    _detonator.Show();
+                    Detonator.Show();
                     break;
                 case 2: //Trigger Explosion
                     TriggerExplosive();
@@ -97,24 +74,24 @@ namespace Game.Scripts.Player
         private void ReleasePlayerControl()
         {
             _canMove = false;
-            _followCam.Priority = 9;
+            FollowCam.Priority = 9;
         }
 
         private void ReturnPlayerControl()
         {
-            _model.SetActive(true);
+            Model.SetActive(true);
             _canMove = true;
-            _followCam.Priority = 10;
+            FollowCam.Priority = 10;
         }
 
         private void HidePlayer()
         {
-            _model.SetActive(false);
+            Model.SetActive(false);
         }
                
         private void TriggerExplosive()
         {
-            _detonator.TriggerExplosion();
+            Detonator.TriggerExplosion();
         }
 
         private void OnDisable()
@@ -127,8 +104,43 @@ namespace Game.Scripts.Player
             Forklift.onDriveModeEntered -= HidePlayer;
             Drone.OnEnterFlightMode -= ReleasePlayerControl;
             Drone.onExitFlightmode -= ReturnPlayerControl;
+            
+            MoveReference.action.Disable();
         }
 
+        private void OnEnable()
+        {
+            InteractableZone.onZoneInteractionComplete += InteractableZone_onZoneInteractionComplete;
+            Laptop.onHackComplete += ReleasePlayerControl;
+            Laptop.onHackEnded += ReturnPlayerControl;
+            Forklift.onDriveModeEntered += ReleasePlayerControl;
+            Forklift.onDriveModeExited += ReturnPlayerControl;
+            Forklift.onDriveModeEntered += HidePlayer;
+            Drone.OnEnterFlightMode += ReleasePlayerControl;
+            Drone.onExitFlightmode += ReturnPlayerControl;
+            
+            MoveReference.action.Enable();
+        } 
+
+        private void Start()
+        {
+            _controller = GetComponent<CharacterController>();
+
+            if (_controller == null)
+                Debug.LogError("No Character Controller Present");
+
+            _anim = GetComponentInChildren<Animator>();
+
+            if (_anim == null)
+                Debug.Log("Failed to connect the Animator");
+        }
+
+        private void Update()
+        {
+            if (_canMove == true)
+                CalcutateMovement();
+
+        }
     }
 }
 
