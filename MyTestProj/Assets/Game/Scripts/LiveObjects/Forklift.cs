@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using Cinemachine;
+using Scripts.Helpers;
+using UnityEngine.InputSystem;
 
 namespace Game.Scripts.LiveObjects
 {
@@ -19,15 +21,25 @@ namespace Game.Scripts.LiveObjects
         private bool _inDriveMode = false;
         [SerializeField]
         private InteractableZone _interactableZone;
+        
+        /// <summary>
+        /// Reference to the Forklift movement keys (Default to 'WASD')
+        /// </summary>
+        [SerializeField, Tooltip("Reference to the Forklift movement keys (Default to \'WASD\' keys)"), Header("Input References")]
+        public InputActionReference ForkliftMovementReference;
+        /// <summary>
+        /// Reference to the Forklift movement of forks keys (Default to <see cref="KeyCode.R"/> and <see cref="KeyCode.T"/> keys)
+        /// </summary>
+        [SerializeField, Tooltip("Reference to the Forklift movement of forks keys (Default to \'R\' and \'T\' keys)")]
+        public InputActionReference ForkliftForksReference;
+
+        private bool _liftForks = false;
+        private bool _dropForks = false;
 
         public static event Action onDriveModeEntered;
         public static event Action onDriveModeExited;
 
-        private void OnEnable()
-        {
-            InteractableZone.onZoneInteractionComplete += EnterDriveMode;
-        }
-
+       
         private void EnterDriveMode(InteractableZone zone)
         {
             if (_inDriveMode !=true && zone.GetZoneID() == 5) //Enter ForkLift
@@ -37,6 +49,11 @@ namespace Game.Scripts.LiveObjects
                 onDriveModeEntered?.Invoke();
                 _driverModel.SetActive(true);
                 _interactableZone.CompleteTask(5);
+                
+                ForkliftMovementReference.action.Enable();
+                
+                ForkliftForksReference.action.Enable();
+                ActionMapManager.OnEscapeKeyPressed += ExitDriveModePressed;
             }
         }
 
@@ -47,24 +64,17 @@ namespace Game.Scripts.LiveObjects
             _driverModel.SetActive(false);
             onDriveModeExited?.Invoke();
             
-        }
-
-        private void Update()
-        {
-            if (_inDriveMode == true)
-            {
-                LiftControls();
-                CalcutateMovement();
-                if (Input.GetKeyDown(KeyCode.Escape))
-                    ExitDriveMode();
-            }
-
+            ForkliftMovementReference.action.Disable();
+            ForkliftForksReference.action.Disable();
+            
+            ActionMapManager.OnEscapeKeyPressed -= ExitDriveModePressed;
         }
 
         private void CalcutateMovement()
         {
-            float h = Input.GetAxisRaw("Horizontal");
-            float v = Input.GetAxisRaw("Vertical");
+            float h = ForkliftMovementReference.action.ReadValue<Vector2>().x;
+            float v = ForkliftMovementReference.action.ReadValue<Vector2>().y;
+            
             var direction = new Vector3(0, 0, v);
             var velocity = direction * _speed;
 
@@ -80,9 +90,11 @@ namespace Game.Scripts.LiveObjects
 
         private void LiftControls()
         {
-            if (Input.GetKey(KeyCode.R))
+            float forkDirection = ForkliftForksReference.action.ReadValue<float>();
+            
+            if (forkDirection > 0)
                 LiftUpRoutine();
-            else if (Input.GetKey(KeyCode.T))
+            else if (forkDirection < 0)
                 LiftDownRoutine();
         }
 
@@ -109,11 +121,30 @@ namespace Game.Scripts.LiveObjects
             else if (_lift.transform.localPosition.y <= _liftUpperLimit.y)
                 _lift.transform.localPosition = _liftLowerLimit;
         }
+        
+        private void ExitDriveModePressed()
+        {
+            ExitDriveMode();
+        }
+        
+        private void OnEnable()
+        {
+            InteractableZone.onZoneInteractionComplete += EnterDriveMode;
+        }
 
         private void OnDisable()
         {
             InteractableZone.onZoneInteractionComplete -= EnterDriveMode;
         }
+        
+        private void Update()
+        {
+            if (_inDriveMode == true)
+            {
+                LiftControls();
+                CalcutateMovement();
+            }
 
+        }
     }
 }

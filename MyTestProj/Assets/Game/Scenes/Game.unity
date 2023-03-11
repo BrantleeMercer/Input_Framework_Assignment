@@ -7042,6 +7042,10 @@ MonoBehaviour:
   _forkliftCam: {fileID: 972744896}
   _driverModel: {fileID: 1509951838}
   _interactableZone: {fileID: 1277958656}
+  ForkliftMovementReference: {fileID: 4060475862831507845, guid: e1bcf0c1fddcb0a41a5b829240af92de,
+    type: 3}
+  ForkliftForksReference: {fileID: 3022380251899872255, guid: e1bcf0c1fddcb0a41a5b829240af92de,
+    type: 3}
 --- !u!65 &402105200
 BoxCollider:
   m_ObjectHideFlags: 0
