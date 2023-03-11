@@ -53,6 +53,15 @@ public partial class @DroneActionsMap : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Yaw"",
+                    ""type"": ""Button"",
+                    ""id"": ""706e76c5-dfdc-4e49-9a9f-cd955fe20c74"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -209,6 +218,72 @@ public partial class @DroneActionsMap : IInputActionCollection2, IDisposable
                     ""action"": ""Descend"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Arrows"",
+                    ""id"": ""b37fde93-bcc5-4956-8a4e-053545b369e8"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Yaw"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""603ae3f6-05eb-4f53-b444-6a9bc57f035a"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Yaw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""85a40ae2-cd5d-43cd-b448-00035f1d1459"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Yaw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Gamepad"",
+                    ""id"": ""c18b6032-b044-4181-82f3-93f82667ec8a"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Yaw"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""73d3da18-ab1d-4bd9-a3b3-e0aef4355d43"",
+                    ""path"": ""<Gamepad>/rightStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Yaw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""e25ee3e5-dc3d-44e1-b99a-a756c236b58d"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Yaw"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -220,6 +295,7 @@ public partial class @DroneActionsMap : IInputActionCollection2, IDisposable
         m_Flying_Movement = m_Flying.FindAction("Movement", throwIfNotFound: true);
         m_Flying_Ascend = m_Flying.FindAction("Ascend", throwIfNotFound: true);
         m_Flying_Descend = m_Flying.FindAction("Descend", throwIfNotFound: true);
+        m_Flying_Yaw = m_Flying.FindAction("Yaw", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -282,6 +358,7 @@ public partial class @DroneActionsMap : IInputActionCollection2, IDisposable
     private readonly InputAction m_Flying_Movement;
     private readonly InputAction m_Flying_Ascend;
     private readonly InputAction m_Flying_Descend;
+    private readonly InputAction m_Flying_Yaw;
     public struct FlyingActions
     {
         private @DroneActionsMap m_Wrapper;
@@ -289,6 +366,7 @@ public partial class @DroneActionsMap : IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_Flying_Movement;
         public InputAction @Ascend => m_Wrapper.m_Flying_Ascend;
         public InputAction @Descend => m_Wrapper.m_Flying_Descend;
+        public InputAction @Yaw => m_Wrapper.m_Flying_Yaw;
         public InputActionMap Get() { return m_Wrapper.m_Flying; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -307,6 +385,9 @@ public partial class @DroneActionsMap : IInputActionCollection2, IDisposable
                 @Descend.started -= m_Wrapper.m_FlyingActionsCallbackInterface.OnDescend;
                 @Descend.performed -= m_Wrapper.m_FlyingActionsCallbackInterface.OnDescend;
                 @Descend.canceled -= m_Wrapper.m_FlyingActionsCallbackInterface.OnDescend;
+                @Yaw.started -= m_Wrapper.m_FlyingActionsCallbackInterface.OnYaw;
+                @Yaw.performed -= m_Wrapper.m_FlyingActionsCallbackInterface.OnYaw;
+                @Yaw.canceled -= m_Wrapper.m_FlyingActionsCallbackInterface.OnYaw;
             }
             m_Wrapper.m_FlyingActionsCallbackInterface = instance;
             if (instance != null)
@@ -320,6 +401,9 @@ public partial class @DroneActionsMap : IInputActionCollection2, IDisposable
                 @Descend.started += instance.OnDescend;
                 @Descend.performed += instance.OnDescend;
                 @Descend.canceled += instance.OnDescend;
+                @Yaw.started += instance.OnYaw;
+                @Yaw.performed += instance.OnYaw;
+                @Yaw.canceled += instance.OnYaw;
             }
         }
     }
@@ -329,5 +413,6 @@ public partial class @DroneActionsMap : IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnAscend(InputAction.CallbackContext context);
         void OnDescend(InputAction.CallbackContext context);
+        void OnYaw(InputAction.CallbackContext context);
     }
 }

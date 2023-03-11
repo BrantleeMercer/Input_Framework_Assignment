@@ -20242,6 +20242,14 @@ MonoBehaviour:
   _propAnim: {fileID: 181193216}
   _droneCam: {fileID: 106664337}
   _interactableZone: {fileID: 1810029383}
+  DroneAscendKeyReference: {fileID: 5911090821319845477, guid: ab0c61ced76e4b846870e0f9968657bc,
+    type: 3}
+  DroneDescendKeyReference: {fileID: 3154960959319137745, guid: ab0c61ced76e4b846870e0f9968657bc,
+    type: 3}
+  DroneMovementReference: {fileID: 3528361331317761563, guid: ab0c61ced76e4b846870e0f9968657bc,
+    type: 3}
+  DroneYawReference: {fileID: 7784489372324799000, guid: ab0c61ced76e4b846870e0f9968657bc,
+    type: 3}
 --- !u!65 &1073608671
 BoxCollider:
   m_ObjectHideFlags: 0
