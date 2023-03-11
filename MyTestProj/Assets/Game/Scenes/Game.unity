@@ -3235,6 +3235,10 @@ MonoBehaviour:
   _zoneKeyInput: 101
   _keyState: 0
   _marker: {fileID: 1808342870}
+  MainKeyReference: {fileID: 5507157871840540281, guid: 8a4a8ad2e10e564468c43c465f87320b,
+    type: 3}
+  SecondaryKeyReference: {fileID: 1667971912552323215, guid: 8a4a8ad2e10e564468c43c465f87320b,
+    type: 3}
 --- !u!1001 &198573547
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5982,10 +5986,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d278a65e6d151a44b8e0fd78d0b8f85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 5
-  _detonator: {fileID: 2496590969500232579}
-  _followCam: {fileID: 1266060213}
-  _model: {fileID: 852618543}
+  Speed: 5
+  Detonator: {fileID: 2496590969500232579}
+  FollowCam: {fileID: 1266060213}
+  Model: {fileID: 852618543}
+  MoveReference: {fileID: -9092265268962517408, guid: 8a4a8ad2e10e564468c43c465f87320b,
+    type: 3}
 --- !u!4 &359860634
 Transform:
   m_ObjectHideFlags: 0
@@ -8607,6 +8613,10 @@ MonoBehaviour:
   _zoneKeyInput: 101
   _keyState: 0
   _marker: {fileID: 605505802}
+  MainKeyReference: {fileID: 5507157871840540281, guid: 8a4a8ad2e10e564468c43c465f87320b,
+    type: 3}
+  SecondaryKeyReference: {fileID: 1667971912552323215, guid: 8a4a8ad2e10e564468c43c465f87320b,
+    type: 3}
 --- !u!4 &482471386 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5779097134961922744, guid: 1d553f90302742946bbf45996165949c,
@@ -8898,6 +8908,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 923129878}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &499274895
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 499274896}
+  m_Layer: 0
+  m_Name: MyHelper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &499274896
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 499274895}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1817884037}
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &500352146
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10724,6 +10765,10 @@ MonoBehaviour:
   _zoneKeyInput: 32
   _keyState: 0
   _marker: {fileID: 1331263896}
+  MainKeyReference: {fileID: 5507157871840540281, guid: 8a4a8ad2e10e564468c43c465f87320b,
+    type: 3}
+  SecondaryKeyReference: {fileID: 1667971912552323215, guid: 8a4a8ad2e10e564468c43c465f87320b,
+    type: 3}
 --- !u!1001 &565131287
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18128,6 +18173,10 @@ MonoBehaviour:
   _zoneKeyInput: 101
   _keyState: 0
   _marker: {fileID: 1578479318}
+  MainKeyReference: {fileID: 5507157871840540281, guid: 8a4a8ad2e10e564468c43c465f87320b,
+    type: 3}
+  SecondaryKeyReference: {fileID: 1667971912552323215, guid: 8a4a8ad2e10e564468c43c465f87320b,
+    type: 3}
 --- !u!1 &967188505
 GameObject:
   m_ObjectHideFlags: 3
@@ -25102,6 +25151,10 @@ MonoBehaviour:
   _zoneKeyInput: 101
   _keyState: 0
   _marker: {fileID: 1583429342}
+  MainKeyReference: {fileID: 5507157871840540281, guid: 8a4a8ad2e10e564468c43c465f87320b,
+    type: 3}
+  SecondaryKeyReference: {fileID: 1667971912552323215, guid: 8a4a8ad2e10e564468c43c465f87320b,
+    type: 3}
 --- !u!1001 &1178759240
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26405,6 +26458,10 @@ MonoBehaviour:
   _zoneKeyInput: 101
   _keyState: 0
   _marker: {fileID: 1840441541}
+  MainKeyReference: {fileID: 5507157871840540281, guid: 8a4a8ad2e10e564468c43c465f87320b,
+    type: 3}
+  SecondaryKeyReference: {fileID: 1667971912552323215, guid: 8a4a8ad2e10e564468c43c465f87320b,
+    type: 3}
 --- !u!4 &1277958657 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5779097134961922744, guid: 1d553f90302742946bbf45996165949c,
@@ -35837,6 +35894,10 @@ MonoBehaviour:
   _zoneKeyInput: 101
   _keyState: 0
   _marker: {fileID: 1041737524}
+  MainKeyReference: {fileID: 5507157871840540281, guid: 8a4a8ad2e10e564468c43c465f87320b,
+    type: 3}
+  SecondaryKeyReference: {fileID: 1667971912552323215, guid: 8a4a8ad2e10e564468c43c465f87320b,
+    type: 3}
 --- !u!1001 &1810757429
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35906,6 +35967,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10fbee8a99d5f4ddea65c479cfdfb5d2, type: 3}
+--- !u!1 &1817884036
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1817884037}
+  - component: {fileID: 1817884038}
+  m_Layer: 0
+  m_Name: IZ Helper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1817884037
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817884036}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 499274896}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1817884038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817884036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7f12e279e41544489f4b5357a27f290, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InteractableZonesList:
+  - {fileID: 1810029383}
+  - {fileID: 2029547919}
+  - {fileID: 1277958656}
+  - {fileID: 197238855}
+  - {fileID: 965513072}
 --- !u!4 &1818928847 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 4a0a076f5d87d456c922826ac1d1e020,
@@ -39583,6 +39693,10 @@ MonoBehaviour:
   _zoneKeyInput: 101
   _keyState: 1
   _marker: {fileID: 55150249}
+  MainKeyReference: {fileID: 5507157871840540281, guid: 8a4a8ad2e10e564468c43c465f87320b,
+    type: 3}
+  SecondaryKeyReference: {fileID: 1667971912552323215, guid: 8a4a8ad2e10e564468c43c465f87320b,
+    type: 3}
 --- !u!4 &2030128479 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 83b308def8e254c558e3d7c4628b4fe2,
