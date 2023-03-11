@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using Game.Scripts.UI;
+using UnityEngine.InputSystem;
 
 namespace Game.Scripts.LiveObjects
 {
@@ -26,14 +27,24 @@ namespace Game.Scripts.LiveObjects
         [SerializeField]
         private InteractableZone _interactableZone;
         
+        /// <summary>
+        /// Reference to the drone ascend key (Default to <see cref="KeyCode.Space"/> key)
+        /// </summary>
+        [SerializeField, Tooltip("Reference to the drone ascend key (Default to \'Space\' key)"), Header("Drone Input References")]
+        public InputActionReference DroneAscendKeyReference;
+        /// <summary>
+        /// Reference to the drone descend key (Default to <see cref="KeyCode.V"/> key)
+        /// </summary>
+        [SerializeField, Tooltip("Reference to the drone ascend key (Default to \'V\' key)")]
+        public InputActionReference DroneDescendKeyReference;
+        /// <summary>
+        /// Reference to the drone descend key (Default to 'WASD')
+        /// </summary>
+        [SerializeField, Tooltip("Reference to the drone Movement (Default to \'WASD\' keys)")]
+        public InputActionReference DroneMovementReference;
 
         public static event Action OnEnterFlightMode;
         public static event Action onExitFlightmode;
-
-        private void OnEnable()
-        {
-            InteractableZone.onZoneInteractionComplete += EnterFlightMode;
-        }
 
         private void EnterFlightMode(InteractableZone zone)
         {
@@ -45,6 +56,12 @@ namespace Game.Scripts.LiveObjects
                 OnEnterFlightMode?.Invoke();
                 UIManager.Instance.DroneView(true);
                 _interactableZone.CompleteTask(4);
+
+                DroneAscendKeyReference.action.Enable();
+                DroneDescendKeyReference.action.Enable();
+                DroneMovementReference.action.Enable();
+                DroneAscendKeyReference.action.performed += DroneAscendKeyHasBeenPressed;
+                DroneDescendKeyReference.action.performed += DroneDescendKeyHasBeenPressed;
             }
         }
 
@@ -52,30 +69,13 @@ namespace Game.Scripts.LiveObjects
         {            
             _droneCam.Priority = 9;
             _inFlightMode = false;
-            UIManager.Instance.DroneView(false);            
-        }
-
-        private void Update()
-        {
-            if (_inFlightMode)
-            {
-                CalculateTilt();
-                CalculateMovementUpdate();
-
-                if (Input.GetKeyDown(KeyCode.Escape))
-                {
-                    _inFlightMode = false;
-                    onExitFlightmode?.Invoke();
-                    ExitFlightMode();
-                }
-            }
-        }
-
-        private void FixedUpdate()
-        {
-            _rigidbody.AddForce(transform.up * (9.81f), ForceMode.Acceleration);
-            if (_inFlightMode)
-                CalculateMovementFixedUpdate();
+            UIManager.Instance.DroneView(false);
+            
+            DroneAscendKeyReference.action.Disable();
+            DroneDescendKeyReference.action.Disable();
+            DroneMovementReference.action.Disable();
+            DroneAscendKeyReference.action.performed -= DroneAscendKeyHasBeenPressed;
+            DroneDescendKeyReference.action.performed -= DroneDescendKeyHasBeenPressed;
         }
 
         private void CalculateMovementUpdate()
@@ -120,10 +120,51 @@ namespace Game.Scripts.LiveObjects
             else 
                 transform.rotation = Quaternion.Euler(0, transform.localRotation.eulerAngles.y, 0);
         }
+        
+        private void DroneAscendKeyHasBeenPressed(InputAction.CallbackContext context)
+        {
+            
+            Debug.Log($"Pressed Ascend");
+        }
+		
+        private void DroneDescendKeyHasBeenPressed(InputAction.CallbackContext context)
+        {
+           
+            Debug.Log($"Pressed Descend");
+            
+        }
+        
+        private void OnEnable()
+        {
+            InteractableZone.onZoneInteractionComplete += EnterFlightMode;
+        }
 
         private void OnDisable()
         {
             InteractableZone.onZoneInteractionComplete -= EnterFlightMode;
+        }
+
+        private void FixedUpdate()
+        {
+            _rigidbody.AddForce(transform.up * (9.81f), ForceMode.Acceleration);
+            if (_inFlightMode)
+                CalculateMovementFixedUpdate();
+        }
+        
+        private void Update()
+        {
+            if (_inFlightMode)
+            {
+                CalculateTilt();
+                CalculateMovementUpdate();
+
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    _inFlightMode = false;
+                    onExitFlightmode?.Invoke();
+                    ExitFlightMode();
+                }
+            }
         }
     }
 }

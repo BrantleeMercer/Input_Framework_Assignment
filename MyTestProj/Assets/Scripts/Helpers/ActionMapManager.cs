@@ -9,19 +9,19 @@ namespace Scripts.Helpers
 		public static ActionMapManager instance { get; private set; }
 		
 		/// <summary>
-		/// Reference to the main interact key (Default to 'E' key)
+		/// Reference to the main interact key (Default to <see cref="KeyCode.E"/> key)
 		/// </summary>
-		[SerializeField, Tooltip("Reference to the main interact key (Default to \'E\' key)"), Header("Input References")]
+		[SerializeField, Tooltip("Reference to the main interact key (Default to \'E\' key)"), Header("Interactable Input References")]
 		public InputActionReference MainKeyReference;
 		/// <summary>
-		/// Reference to the Secondary interact key (Default to 'Space' key)
+		/// Reference to the Secondary interact key (Default to <see cref="KeyCode.Space"/> key)
 		/// </summary>
 		[SerializeField, Tooltip("Reference to the Secondary interact key (Default to \'Space\' key)")]
 		public InputActionReference SecondaryKeyReference;
 		/// <summary>
-		/// Reference to the Escape interact key (Default to 'Esc' key)
+		/// Reference to the Escape interact key (Default to <see cref="KeyCode.Escape"/> key)
 		/// </summary>
-		[SerializeField, Tooltip("Reference to the Secondary interact key (Default to \'Space\' key)")]
+		[SerializeField, Tooltip("Reference to the Secondary interact key (Default to \'Escape\' key)")]
 		public InputActionReference EscapeKeyReference;
 
 		public static Action OnMainKeyPressed;
@@ -34,6 +34,8 @@ namespace Scripts.Helpers
 		public static Action OnEscapeKeyPressed;
 		public static Action OnEscapeKeyLetGo;
 
+		public static Action OnDroneAscendKeyPressed;
+		public static Action OnDroneDescendKeyPressed;
 		
 		private void MainKeyHeldDown(InputAction.CallbackContext context)
 		{

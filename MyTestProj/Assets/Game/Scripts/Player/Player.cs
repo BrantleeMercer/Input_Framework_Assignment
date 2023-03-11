@@ -39,6 +39,15 @@ namespace Game.Scripts.Player
             float h = MoveReference.action.ReadValue<Vector2>().x;
             float v = MoveReference.action.ReadValue<Vector2>().y;
 
+            if (h != 0)
+            {
+                Debug.Log($"Moving on the x axis: {h}");
+            }
+            if (v != 0)
+            {
+                Debug.Log($"Moving on the y axis: {v}");
+            }
+            
             transform.Rotate(transform.up, h);
 
             var direction = transform.forward * v;
