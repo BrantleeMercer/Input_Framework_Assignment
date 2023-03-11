@@ -149,6 +149,107 @@ public partial class @PlayerActionsMap : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Interactables"",
+            ""id"": ""1437f5ac-7ea8-4bab-95f7-2ea69b70f12c"",
+            ""actions"": [
+                {
+                    ""name"": ""Main Interactable Key"",
+                    ""type"": ""Button"",
+                    ""id"": ""ff5162dc-81f8-408f-9035-f9dc69033b89"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Secondary Interactable Key"",
+                    ""type"": ""Button"",
+                    ""id"": ""39ff6223-8dfb-4c9d-aa70-bd245bce8350"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Exit Key"",
+                    ""type"": ""Button"",
+                    ""id"": ""df672a2b-31b3-4f35-9a06-b1726bc4a174"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""7a1683ff-fbdc-4b32-9359-c3052ab52fdb"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Main Interactable Key"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""309f34ef-1884-43ff-85d9-b3321de2ba3f"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Main Interactable Key"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6d53bc3f-2156-4347-af69-fd510a7126a4"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Secondary Interactable Key"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""60913588-d951-469e-90f5-22e2edd822de"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Secondary Interactable Key"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4a93bdbb-bb2a-4714-9792-9e45a027d5a4"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit Key"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d0702517-a882-40ad-8c40-667b31aadec0"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit Key"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -156,6 +257,11 @@ public partial class @PlayerActionsMap : IInputActionCollection2, IDisposable
         // Movement
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
         m_Movement_Walking = m_Movement.FindAction("Walking", throwIfNotFound: true);
+        // Interactables
+        m_Interactables = asset.FindActionMap("Interactables", throwIfNotFound: true);
+        m_Interactables_MainInteractableKey = m_Interactables.FindAction("Main Interactable Key", throwIfNotFound: true);
+        m_Interactables_SecondaryInteractableKey = m_Interactables.FindAction("Secondary Interactable Key", throwIfNotFound: true);
+        m_Interactables_ExitKey = m_Interactables.FindAction("Exit Key", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -244,8 +350,63 @@ public partial class @PlayerActionsMap : IInputActionCollection2, IDisposable
         }
     }
     public MovementActions @Movement => new MovementActions(this);
+
+    // Interactables
+    private readonly InputActionMap m_Interactables;
+    private IInteractablesActions m_InteractablesActionsCallbackInterface;
+    private readonly InputAction m_Interactables_MainInteractableKey;
+    private readonly InputAction m_Interactables_SecondaryInteractableKey;
+    private readonly InputAction m_Interactables_ExitKey;
+    public struct InteractablesActions
+    {
+        private @PlayerActionsMap m_Wrapper;
+        public InteractablesActions(@PlayerActionsMap wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MainInteractableKey => m_Wrapper.m_Interactables_MainInteractableKey;
+        public InputAction @SecondaryInteractableKey => m_Wrapper.m_Interactables_SecondaryInteractableKey;
+        public InputAction @ExitKey => m_Wrapper.m_Interactables_ExitKey;
+        public InputActionMap Get() { return m_Wrapper.m_Interactables; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InteractablesActions set) { return set.Get(); }
+        public void SetCallbacks(IInteractablesActions instance)
+        {
+            if (m_Wrapper.m_InteractablesActionsCallbackInterface != null)
+            {
+                @MainInteractableKey.started -= m_Wrapper.m_InteractablesActionsCallbackInterface.OnMainInteractableKey;
+                @MainInteractableKey.performed -= m_Wrapper.m_InteractablesActionsCallbackInterface.OnMainInteractableKey;
+                @MainInteractableKey.canceled -= m_Wrapper.m_InteractablesActionsCallbackInterface.OnMainInteractableKey;
+                @SecondaryInteractableKey.started -= m_Wrapper.m_InteractablesActionsCallbackInterface.OnSecondaryInteractableKey;
+                @SecondaryInteractableKey.performed -= m_Wrapper.m_InteractablesActionsCallbackInterface.OnSecondaryInteractableKey;
+                @SecondaryInteractableKey.canceled -= m_Wrapper.m_InteractablesActionsCallbackInterface.OnSecondaryInteractableKey;
+                @ExitKey.started -= m_Wrapper.m_InteractablesActionsCallbackInterface.OnExitKey;
+                @ExitKey.performed -= m_Wrapper.m_InteractablesActionsCallbackInterface.OnExitKey;
+                @ExitKey.canceled -= m_Wrapper.m_InteractablesActionsCallbackInterface.OnExitKey;
+            }
+            m_Wrapper.m_InteractablesActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @MainInteractableKey.started += instance.OnMainInteractableKey;
+                @MainInteractableKey.performed += instance.OnMainInteractableKey;
+                @MainInteractableKey.canceled += instance.OnMainInteractableKey;
+                @SecondaryInteractableKey.started += instance.OnSecondaryInteractableKey;
+                @SecondaryInteractableKey.performed += instance.OnSecondaryInteractableKey;
+                @SecondaryInteractableKey.canceled += instance.OnSecondaryInteractableKey;
+                @ExitKey.started += instance.OnExitKey;
+                @ExitKey.performed += instance.OnExitKey;
+                @ExitKey.canceled += instance.OnExitKey;
+            }
+        }
+    }
+    public InteractablesActions @Interactables => new InteractablesActions(this);
     public interface IMovementActions
     {
         void OnWalking(InputAction.CallbackContext context);
+    }
+    public interface IInteractablesActions
+    {
+        void OnMainInteractableKey(InputAction.CallbackContext context);
+        void OnSecondaryInteractableKey(InputAction.CallbackContext context);
+        void OnExitKey(InputAction.CallbackContext context);
     }
 }

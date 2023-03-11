@@ -11,14 +11,15 @@ namespace Game.Scripts.Player
     [RequireComponent(typeof(CharacterController))]
     public class Player : MonoBehaviour
     {
-        [FormerlySerializedAs("_speed")] [SerializeField]
+        [SerializeField]
         private float Speed = 5.0f;
-        [FormerlySerializedAs("_detonator")] [SerializeField]
+        [SerializeField]
         private Detonator Detonator;
-        [FormerlySerializedAs("_followCam")] [SerializeField]
+        [SerializeField]
         private CinemachineVirtualCamera FollowCam;
-        [FormerlySerializedAs("_model")] [SerializeField]
+        [SerializeField]
         private GameObject Model;
+        
         /// <summary>
         /// Input Action Reference for moving the player
         /// </summary>
