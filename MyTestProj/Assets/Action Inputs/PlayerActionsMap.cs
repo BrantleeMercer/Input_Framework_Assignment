@@ -41,7 +41,7 @@ public partial class @PlayerActionsMap : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""WASD"",
                     ""id"": ""ff94e378-bd2c-46cb-8a23-c1b980c2e635"",
-                    ""path"": ""2DVector(mode=2)"",
+                    ""path"": ""2DVector(mode=1)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

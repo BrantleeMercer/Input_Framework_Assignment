@@ -46,16 +46,9 @@ namespace Game.Scripts.LiveObjects
         private KeyState _keyState;
         [SerializeField]
         private GameObject _marker;
-        /// <summary>
-        /// Reference to the main interact key (Default to 'E' key)
-        /// </summary>
-        [SerializeField, Tooltip("Reference to the main interact key (Default to \'E\' key)"), Header("Input References")]
-        public InputActionReference MainKeyReference;
-        /// <summary>
-        /// Reference to the Secondary interact key (Default to 'Space' key)
-        /// </summary>
-        [SerializeField, Tooltip("Reference to the Secondary interact key (Default to \'Space\' key)")]
-        public InputActionReference SecondaryKeyReference;
+        
+        private InputActionReference _mainKeyReference;
+        private InputActionReference _secondaryKeyReference;
 
         private bool _inHoldState = false;
         private bool _mainKeyPressed = false;
@@ -129,7 +122,6 @@ namespace Game.Scripts.LiveObjects
             if (zoneID == _zoneID)
             {
                 _currentZoneID++;
-                ResetInteractableZones.instance.DoResetAction();
                 onZoneInteractionComplete?.Invoke(this);
             }
         }
@@ -205,63 +197,59 @@ namespace Game.Scripts.LiveObjects
             }
         }
         
-        private void MainActionKeyStopped(InputAction.CallbackContext context)
+        private void MainActionKeyStopped()
         {
             Debug.Log("Main Key Press Let Go");
             _mainKeyHeld = false;
             _mainKeyPressed = false;
         }
         
-        private void MainActionKeyStarted(InputAction.CallbackContext context)
+        private void MainActionKeyStarted()
         {
             Debug.Log("Main Key Press Held");
             _mainKeyHeld = true;
         }
 
-        private void MainActionKeyPressed(InputAction.CallbackContext context)
+        private void MainActionKeyPressed()
         {
             Debug.Log("Main Key Pressed");
             _mainKeyPressed = true;
         }
 
-        private void SecondaryActionKeyPerformed(InputAction.CallbackContext context)
+        private void SecondaryActionKeyPerformed()
         {
             Debug.Log("Secondary Key Pressed");
             _secondaryKeyPressed = true;
         }
         
-        private void SecondaryActionKeyStopped(InputAction.CallbackContext context)
+        private void SecondaryActionKeyStopped()
         {
             Debug.Log("Secondary Key Press Stopped");
             _secondaryKeyPressed = false;
         }
-        
+
         private void OnEnable()
         {
             InteractableZone.onZoneInteractionComplete += SetMarker;
             
-            MainKeyReference.action.Enable();
-            MainKeyReference.action.performed += MainActionKeyPressed;
-            MainKeyReference.action.started += MainActionKeyStarted;
-            MainKeyReference.action.canceled += MainActionKeyStopped;
+            ActionMapManager.OnMainKeyPressed += MainActionKeyPressed;
+            ActionMapManager.OnMainKeyHeld += MainActionKeyStarted;
+            ActionMapManager.OnMainKeyLetGo += MainActionKeyStopped;
             
-            SecondaryKeyReference.action.Enable();
-            SecondaryKeyReference.action.performed += SecondaryActionKeyPerformed;
-            SecondaryKeyReference.action.canceled += SecondaryActionKeyStopped;
+            ActionMapManager.OnSecondaryKeyPressed += SecondaryActionKeyPerformed;
+            ActionMapManager.OnSecondaryKeyLetGo += SecondaryActionKeyStopped;
         }
 
         private void OnDisable()
         {
             InteractableZone.onZoneInteractionComplete -= SetMarker;
             
-            MainKeyReference.action.Disable();
-            MainKeyReference.action.performed -= MainActionKeyPressed;
-            MainKeyReference.action.started -= MainActionKeyStarted;
-            MainKeyReference.action.canceled -= MainActionKeyStopped;
+            ActionMapManager.OnMainKeyPressed -= MainActionKeyPressed;
+            ActionMapManager.OnMainKeyHeld -= MainActionKeyStarted;
+            ActionMapManager.OnMainKeyLetGo -= MainActionKeyStopped;
             
-            SecondaryKeyReference.action.Disable();
-            SecondaryKeyReference.action.performed -= SecondaryActionKeyPerformed;
-            SecondaryKeyReference.action.canceled -= SecondaryActionKeyStopped;
+            ActionMapManager.OnSecondaryKeyPressed -= SecondaryActionKeyPerformed;
+            ActionMapManager.OnSecondaryKeyLetGo -= SecondaryActionKeyStopped;
         } 
         
         private void Update()
@@ -332,6 +320,11 @@ namespace Game.Scripts.LiveObjects
             }
         }
 
+        private void Start()
+        {
+            _mainKeyReference = ActionMapManager.instance.MainKeyReference;
+            _secondaryKeyReference = ActionMapManager.instance.SecondaryKeyReference;
+        }
     }
 }
 

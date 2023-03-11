@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Cinemachine;
+using Scripts.Helpers;
+using UnityEngine.InputSystem;
 
 namespace Game.Scripts.LiveObjects
 {
@@ -23,45 +25,14 @@ namespace Game.Scripts.LiveObjects
         public static event Action onHackComplete;
         public static event Action onHackEnded;
 
-        private void OnEnable()
-        {
-            InteractableZone.onHoldStarted += InteractableZone_onHoldStarted;
-            InteractableZone.onHoldEnded += InteractableZone_onHoldEnded;
-        }
-
-        private void Update()
-        {
-            if (_hacked == true)
-            {
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    var previous = _activeCamera;
-                    _activeCamera++;
-
-
-                    if (_activeCamera >= _cameras.Length)
-                        _activeCamera = 0;
-
-
-                    _cameras[_activeCamera].Priority = 11;
-                    _cameras[previous].Priority = 9;
-                }
-
-                if (Input.GetKeyDown(KeyCode.Escape))
-                {
-                    _hacked = false;
-                    onHackEnded?.Invoke();
-                    ResetCameras();
-                }
-            }
-        }
-
         void ResetCameras()
         {
             foreach (var cam in _cameras)
             {
                 cam.Priority = 9;
             }
+            ActionMapManager.OnMainKeyPressed -= ChangeCamera;
+            ActionMapManager.OnEscapeKeyPressed -= ExitCameras;
         }
 
         private void InteractableZone_onHoldStarted(int zoneID)
@@ -88,7 +59,6 @@ namespace Game.Scripts.LiveObjects
             }
         }
 
-        
         IEnumerator HackingRoutine()
         {
             while (_progressBar.value < 1)
@@ -99,6 +69,8 @@ namespace Game.Scripts.LiveObjects
 
             //successfully hacked
             _hacked = true;
+            ActionMapManager.OnMainKeyPressed += ChangeCamera;
+            ActionMapManager.OnEscapeKeyPressed += ExitCameras;
             _interactableZone.CompleteTask(3);
 
             //hide progress bar
@@ -106,6 +78,33 @@ namespace Game.Scripts.LiveObjects
 
             //enable Vcam1
             _cameras[0].Priority = 11;
+        }
+
+        private void ChangeCamera()
+        {
+            var previous = _activeCamera;
+            _activeCamera++;
+
+
+            if (_activeCamera >= _cameras.Length)
+                _activeCamera = 0;
+
+
+            _cameras[_activeCamera].Priority = 11;
+            _cameras[previous].Priority = 9;
+        }
+
+        private void ExitCameras()
+        {
+            _hacked = false;
+            onHackEnded?.Invoke();
+            ResetCameras();
+        }
+        
+        private void OnEnable()
+        {
+            InteractableZone.onHoldStarted += InteractableZone_onHoldStarted;
+            InteractableZone.onHoldEnded += InteractableZone_onHoldEnded;
         }
         
         private void OnDisable()
