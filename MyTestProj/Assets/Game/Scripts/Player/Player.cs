@@ -22,8 +22,8 @@ namespace Game.Scripts.Player
         /// <summary>
         /// Input Action Reference for moving the player
         /// </summary>
-        [field: SerializeField, Tooltip("Input Action Reference for moving the player"), Header("Input Action References")]
-        private InputActionReference MoveReference { get; set; } = null;
+        [SerializeField, Tooltip("Input Action Reference for moving the player"), Header("Input Action References")]
+        private InputActionReference MoveReference;
         
         private bool _playerGrounded;
         private CharacterController _controller;

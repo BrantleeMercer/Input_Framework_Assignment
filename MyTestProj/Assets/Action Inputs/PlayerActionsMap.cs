@@ -29,7 +29,7 @@ public partial class @PlayerActionsMap : IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Walking"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""ff73515b-24e0-4d7e-8590-eb7f1756c6a1"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -41,7 +41,7 @@ public partial class @PlayerActionsMap : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""WASD"",
                     ""id"": ""ff94e378-bd2c-46cb-8a23-c1b980c2e635"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -96,7 +96,7 @@ public partial class @PlayerActionsMap : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Gamepad"",
                     ""id"": ""b03ca9ca-7d62-46c1-8c39-93e67b65ea7d"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
