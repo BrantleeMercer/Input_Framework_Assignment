@@ -204,38 +204,32 @@ namespace Game.Scripts.LiveObjects
         
         private void MainActionKeyStopped()
         {
-            Debug.Log("Main Key Press Let Go");
             _mainKeyHeld = false;
             _mainKeyPressed = false;
         }
         
         private void MainActionKeyStarted()
         {
-            Debug.Log("Main Key Press Held");
             _mainKeyHeld = true;
         }
 
         private void MainActionKeyPressed()
         {
-            Debug.Log("Main Key Pressed");
             _mainKeyPressed = true;
         }
 
         private void SecondaryActionKeyPerformed()
         {
-            Debug.Log("Secondary Key Pressed");
             _secondaryKeyPressed = true;
         }
         
         private void SecondaryActionKeyStopped()
         {
-            Debug.Log("Secondary Key Press Stopped");
             _secondaryKeyPressed = false;
         }
 
         private void OnEnable()
         {
-            Debug.Log($"OnEnable called :: Interactable");
             InteractableZone.onZoneInteractionComplete += SetMarker;
             
             ActionMapManager.OnMainKeyPressed += MainActionKeyPressed;
@@ -248,7 +242,6 @@ namespace Game.Scripts.LiveObjects
 
         private void OnDisable()
         {
-            Debug.Log($"OnDisabled called :: Interactable");
             InteractableZone.onZoneInteractionComplete -= SetMarker;
             
             ActionMapManager.OnMainKeyPressed -= MainActionKeyPressed;

@@ -35,7 +35,6 @@ namespace Game.Scripts.LiveObjects
             
             if (zone.GetZoneID() == 6)
             {
-                Debug.Log($"Crete Started 1 :: Crate");
                 _isReadyToBreak = true;
                 _referenceZone = zone;
             }
@@ -76,44 +75,14 @@ namespace Game.Scripts.LiveObjects
             _punchHeldDown = false;
         }
         
-        // private void InteractableZone_onZoneInteractionComplete(InteractableZone zone)
-        // {
-        //     
-        //     if (_isReadyToBreak == false && _brakeOff.Count >0)
-        //     {
-        //         Debug.Log($"Crete Started 1 :: Crate");
-        //         _wholeCrate.SetActive(false);
-        //         _brokenCrate.SetActive(true);
-        //         _isReadyToBreak = true;
-        //     }
-        //
-        //     if (zone.GetZoneID() == 6 && !_breakCreateActive)
-        //     {
-        //         _breakCreateActive = true;
-        //         _referenceZone = zone;
-        //         _referenceZone.ToggleMainInteractable(false);
-        //     }
-        // }
-
         private void DamageCrate()
         {
-            Debug.Log($"Damaging Crate :: Crate");
-
             if (_brakeOff.Count <= 0)
                 return;
             
             StartCoroutine(PunchDelay());
             StartCoroutine(HoldPunchDown());
 
-            // else if(_brakeOff.Count == 0)
-            // {
-            //     _isReadyToBreak = false;
-            //     _crateCollider.enabled = false;
-            //     _interactableZone.CompleteTask(6);
-            //     Debug.Log("Completely Busted");
-            //     _breakCreateActive = false;
-            //     _referenceZone.ToggleMainInteractable(true);
-            // }
         }
         
         private void BreakPart(float force)
@@ -123,7 +92,6 @@ namespace Game.Scripts.LiveObjects
             
             Vector3 forceDirection = Vector3.up;
             
-            Debug.Log($"Calling Break Apart :: Crate");
             int rng = Random.Range(0, _brakeOff.Count);
             _brakeOff[rng].constraints = RigidbodyConstraints.None;
             _brakeOff[rng].AddForce(forceDirection * (force * Time.deltaTime), ForceMode.Force);
@@ -132,7 +100,6 @@ namespace Game.Scripts.LiveObjects
 
         private IEnumerator PunchDelay()
         {
-            Debug.Log($"Starting PunchDelay Coroutine :: Crate");
             float delayTimer = 0;
             while (delayTimer < _punchDelay)
             {
@@ -145,7 +112,6 @@ namespace Game.Scripts.LiveObjects
 
         private IEnumerator HoldPunchDown()
         {
-            Debug.Log($"Starting HoldPunchDown Coroutine :: Crate");
             float counter = 0.0f;
             
             while (_punchHeldDown)
@@ -156,19 +122,16 @@ namespace Game.Scripts.LiveObjects
                 yield return new WaitForSeconds(1f);
                 counter++;
             }
-            Debug.Log($"Counter == {counter} :: Crate");
             BreakPart(counter);
         }
         
         private void OnEnable()
         {
-            //InteractableZone.onZoneInteractionComplete += InteractableZone_onZoneInteractionComplete;
             InteractableZone.onZoneInteractionComplete += BreakingCratesStarted;
         }
 
         private void OnDisable()
         {
-            //InteractableZone.onZoneInteractionComplete -= InteractableZone_onZoneInteractionComplete;
             InteractableZone.onZoneInteractionComplete -= BreakingCratesStarted;
         }
 

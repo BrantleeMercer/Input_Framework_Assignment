@@ -36,43 +36,36 @@ namespace Scripts.Helpers
 		
 		private void MainKeyHeldDown(InputAction.CallbackContext context)
 		{
-			Debug.Log($"Called from ActionMapManager: MainKeyHeldDown");
 			OnMainKeyHeld?.Invoke();
 		}
 		
 		private void MainKeyHasBeenLetGo(InputAction.CallbackContext context)
 		{
-			Debug.Log($"Called from ActionMapManager: MainKeyHasBeenLetGo");
 			OnMainKeyLetGo?.Invoke();
 		}
 		
 		private void MainKeyHasBeenPressed(InputAction.CallbackContext context)
 		{
-			Debug.Log($"Called from ActionMapManager: MainKeyHasBeenPressed");
 			OnMainKeyPressed?.Invoke();
 		}
 		
 		private void SecondaryKeyHasBeenPressed(InputAction.CallbackContext context)
 		{
-			Debug.Log($"Called from ActionMapManager: SecondaryKeyHasBeenPressed");
 			OnSecondaryKeyPressed?.Invoke();
 		}
 		
 		private void SecondaryKeyHasBeenLetGo(InputAction.CallbackContext context)
 		{
-			Debug.Log($"Called from ActionMapManager: SecondaryKeyHasBeenLetGo");
 			OnSecondaryKeyLetGo?.Invoke();
 		}
 		
 		private void EscapeKeyHasBeenPressed(InputAction.CallbackContext context)
 		{
-			Debug.Log($"Called from ActionMapManager: EscapeKeyHasBeenPressed");
 			OnEscapeKeyPressed?.Invoke();
 		}
 		
 		private void EscapeKeyHasBeenLetGo(InputAction.CallbackContext context)
 		{
-			Debug.Log($"Called from ActionMapManager: EscapeKeyHasBeenLetGo");
 			OnEscapeKeyLetGo?.Invoke();
 		}
 		

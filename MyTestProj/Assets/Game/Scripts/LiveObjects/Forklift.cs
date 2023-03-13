@@ -141,7 +141,6 @@ namespace Game.Scripts.LiveObjects
                 LiftControls();
                 CalcutateMovement();
             }
-
         }
     }
 }

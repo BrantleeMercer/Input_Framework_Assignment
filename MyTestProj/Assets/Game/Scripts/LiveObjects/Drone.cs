@@ -160,25 +160,21 @@ namespace Game.Scripts.LiveObjects
         
         private void DroneAscendKeyHasBeenPressed(InputAction.CallbackContext context)
         {
-            Debug.Log($"Pressed Ascend");
             _ascendPressed = true;
         }
         
         private void DroneAscendKeyHasBeenReleased(InputAction.CallbackContext context)
         {
-            Debug.Log($"Released Ascend");
             _ascendPressed = false;
         }
         
         private void DroneDescendKeyHasBeenPressed(InputAction.CallbackContext context)
         {
-            Debug.Log($"Pressed Descend");
             _descendPressed = true;
         }
         
         private void DroneDescendKeyHasBeenReleased(InputAction.CallbackContext context)
         {
-            Debug.Log($"Released Descend");
             _descendPressed = false;
         }
 
