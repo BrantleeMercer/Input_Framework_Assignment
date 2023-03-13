@@ -34,8 +34,6 @@ namespace Game.Scripts.Player
         private void CalcutateMovement()
         {
             _playerGrounded = _controller.isGrounded;
-            // float h = Input.GetAxisRaw("Horizontal");
-            // float v = Input.GetAxisRaw("Vertical");
             float h = MoveReference.action.ReadValue<Vector2>().x;
             float v = MoveReference.action.ReadValue<Vector2>().y;
 
@@ -105,6 +103,8 @@ namespace Game.Scripts.Player
             Forklift.onDriveModeEntered -= HidePlayer;
             Drone.OnEnterFlightMode -= ReleasePlayerControl;
             Drone.onExitFlightmode -= ReturnPlayerControl;
+            Crate.OnBreakingCratesStarted -= ReleasePlayerControl;
+            Crate.OnBreakingCratesEnded -= ReturnPlayerControl;
             
             MoveReference.action.Disable();
         }
@@ -119,6 +119,8 @@ namespace Game.Scripts.Player
             Forklift.onDriveModeEntered += HidePlayer;
             Drone.OnEnterFlightMode += ReleasePlayerControl;
             Drone.onExitFlightmode += ReturnPlayerControl;
+            Crate.OnBreakingCratesStarted += ReleasePlayerControl;
+            Crate.OnBreakingCratesEnded += ReturnPlayerControl;
             
             MoveReference.action.Enable();
         } 

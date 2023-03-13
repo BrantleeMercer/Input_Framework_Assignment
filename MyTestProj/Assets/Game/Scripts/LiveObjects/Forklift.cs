@@ -33,9 +33,6 @@ namespace Game.Scripts.LiveObjects
         [SerializeField, Tooltip("Reference to the Forklift movement of forks keys (Default to \'R\' and \'T\' keys)")]
         public InputActionReference ForkliftForksReference;
 
-        private bool _liftForks = false;
-        private bool _dropForks = false;
-
         public static event Action onDriveModeEntered;
         public static event Action onDriveModeExited;
 

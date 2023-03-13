@@ -33,9 +33,6 @@ namespace Scripts.Helpers
 
 		public static Action OnEscapeKeyPressed;
 		public static Action OnEscapeKeyLetGo;
-
-		public static Action OnDroneAscendKeyPressed;
-		public static Action OnDroneDescendKeyPressed;
 		
 		private void MainKeyHeldDown(InputAction.CallbackContext context)
 		{

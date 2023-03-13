@@ -46,9 +46,6 @@ namespace Game.Scripts.LiveObjects
         private KeyState _keyState;
         [SerializeField]
         private GameObject _marker;
-        
-        private InputActionReference _mainKeyReference;
-        private InputActionReference _secondaryKeyReference;
 
         private bool _inHoldState = false;
         private bool _mainKeyPressed = false;
@@ -73,6 +70,47 @@ namespace Game.Scripts.LiveObjects
         public static event Action<int> onHoldStarted;
         public static event Action<int> onHoldEnded;
 
+        public GameObject[] GetItems()
+        {
+            return _zoneItems;
+        }
+
+        public int GetZoneID()
+        {
+            return _zoneID;
+        }
+
+        public void CompleteTask(int zoneID)
+        {
+            if (zoneID == _zoneID)
+            {
+                _currentZoneID++;
+                onZoneInteractionComplete?.Invoke(this);
+            }
+        }
+
+        public void ResetAction(int zoneID)
+        {
+            if (zoneID == _zoneID)
+                _actionPerformed = false;
+        }
+
+        public void SetMarker(InteractableZone zone)
+        {
+            if (_zoneID == _currentZoneID)
+                _marker.SetActive(true);
+            else
+                _marker.SetActive(false);
+        }
+
+        public void ToggleMainInteractable(bool MainInteractableOn)
+        {
+            if (MainInteractableOn)
+                OnEnable();
+            else
+                OnDisable();
+        }
+        
         private void CollectItems()
         {
             foreach (var item in _zoneItems)
@@ -107,39 +145,6 @@ namespace Game.Scripts.LiveObjects
             onHoldStarted?.Invoke(_zoneID);
         }
 
-        public GameObject[] GetItems()
-        {
-            return _zoneItems;
-        }
-
-        public int GetZoneID()
-        {
-            return _zoneID;
-        }
-
-        public void CompleteTask(int zoneID)
-        {
-            if (zoneID == _zoneID)
-            {
-                _currentZoneID++;
-                onZoneInteractionComplete?.Invoke(this);
-            }
-        }
-
-        public void ResetAction(int zoneID)
-        {
-            if (zoneID == _zoneID)
-                _actionPerformed = false;
-        }
-
-        public void SetMarker(InteractableZone zone)
-        {
-            if (_zoneID == _currentZoneID)
-                _marker.SetActive(true);
-            else
-                _marker.SetActive(false);
-        }
-        
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player") && _currentZoneID > _requiredID)
@@ -230,6 +235,7 @@ namespace Game.Scripts.LiveObjects
 
         private void OnEnable()
         {
+            Debug.Log($"OnEnable called :: Interactable");
             InteractableZone.onZoneInteractionComplete += SetMarker;
             
             ActionMapManager.OnMainKeyPressed += MainActionKeyPressed;
@@ -242,6 +248,7 @@ namespace Game.Scripts.LiveObjects
 
         private void OnDisable()
         {
+            Debug.Log($"OnDisabled called :: Interactable");
             InteractableZone.onZoneInteractionComplete -= SetMarker;
             
             ActionMapManager.OnMainKeyPressed -= MainActionKeyPressed;
@@ -318,12 +325,6 @@ namespace Game.Scripts.LiveObjects
 
                
             }
-        }
-
-        private void Start()
-        {
-            _mainKeyReference = ActionMapManager.instance.MainKeyReference;
-            _secondaryKeyReference = ActionMapManager.instance.SecondaryKeyReference;
         }
     }
 }
